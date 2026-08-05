@@ -1,0 +1,3 @@
+src/limine.h linguist-vendored
+
+third_party/flanterm/** linguist-vendored
