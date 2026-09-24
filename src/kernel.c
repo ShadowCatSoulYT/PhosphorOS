@@ -5,8 +5,15 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
 #include <limine.h>
 #include "gdt.h"
+#include <flanterm.h>
+#include <flanterm_backends/fb.h>
+#include "interrupts.h"
+
+//exceptional sturcture because flanterm is a needy bastard
+struct flanterm_context *terminal;
 
 // =====================================================================
 // Macros / Defines
@@ -102,12 +109,28 @@ void hcf(void) {
     }
 }
 
+
 int getlenght(char* str) {
     int i = 0;
     while (str[i] != '\0') {
         i++;
     }
     return i;
+}
+
+void strcomb(char a[], char b[]) {
+    int combinedlenght = getlenght(a) + getlenght(b);
+    char temp[combinedlenght + 1];
+    int ia = getlenght(a);
+    int ib = getlenght(b);
+    for (int i = 0; i < ia; i++) {
+        temp[i] = a[i];
+    }
+    for (int i = 0; i < ib; i++) {
+        temp[ia + i] = b[i];
+    }
+    temp[ia + ib] = '\0';
+    memcpy(a, temp, combinedlenght + 1);
 }
 
 void itoa(unsigned int num, char* str) {
@@ -132,6 +155,19 @@ void itoa(unsigned int num, char* str) {
         start++;
         end--;
     }
+}
+
+void u64_to_hex(uint64_t value, char *text) {
+    const char hex[] = "0123456789ABCDEF";
+
+    text[0] = '0';
+    text[1] = 'x';
+
+    for (int i = 0; i < 16; i++) {
+        text[i + 2] = hex[(value >> (60 - i * 4)) & 0xF];
+    }
+
+    text[18] = '\0';
 }
 
 void sleep(uint64_t cycles) {
@@ -163,14 +199,153 @@ void rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t r, uint32
 // Terminal
 // =====================================================================
 
-void write(char* text, uint32_t r, uint32_t g, uint32_t b) {}
+bool terminalavailable = false;
 
+void nwrite(char* text, int color, bool light) {
+    if (terminalavailable) {
+        char formattedtext[256] = "\033[";
+        char colorcode[4];
+
+        if (light) {
+            colorcode[0] = '9';
+            if (color == 7) {
+                colorcode[1] = '0';
+            } else if (color == 1) {
+                colorcode[1] = '1';
+            } else if (color == 3) {
+                colorcode[1] = '2';
+            } else if (color == 2) {
+                colorcode[1] = '3';
+            } else if (color == 5) {
+                colorcode[1] = '4';
+            } else if (color == 6) {
+                colorcode[1] = '5';
+            } else if (color == 4) {
+                colorcode[1] = '6';
+            } else {
+                colorcode[1] = '7';
+            }
+        } else {
+            colorcode[0] = '3';
+            if (color == 7) {
+                colorcode[1] = '0';
+            } else if (color == 1) {
+                colorcode[1] = '1';
+            } else if (color == 3) {
+                colorcode[1] = '2';
+            } else if (color == 2) {
+                colorcode[1] = '3';
+            } else if (color == 5) {
+                colorcode[1] = '4';
+            } else if (color == 6) {
+                colorcode[1] = '5';
+            } else if (color == 4) {
+                colorcode[1] = '6';
+            } else {
+                colorcode[1] = '7';
+            }
+        }
+        colorcode[2] = 'm';
+        colorcode[3] = '\0';
+
+        strcomb(formattedtext, colorcode);
+        strcomb(formattedtext, text);
+        strcomb(formattedtext, "\033[0m\r\n");
+
+        flanterm_write(terminal, formattedtext, getlenght(formattedtext));
+    }
+}
+
+void write(char* text, int color, bool light) {
+    if (terminalavailable) {
+        char formattedtext[256] = "\033[";
+        char colorcode[4];
+
+        if (light) {
+            colorcode[0] = '9';
+            if (color == 7) {
+                colorcode[1] = '0';
+            } else if (color == 1) {
+                colorcode[1] = '1';
+            } else if (color == 3) {
+                colorcode[1] = '2';
+            } else if (color == 2) {
+                colorcode[1] = '3';
+            } else if (color == 5) {
+                colorcode[1] = '4';
+            } else if (color == 6) {
+                colorcode[1] = '5';
+            } else if (color == 4) {
+                colorcode[1] = '6';
+            } else {
+                colorcode[1] = '7';
+            }
+        } else {
+            colorcode[0] = '3';
+            if (color == 7) {
+                colorcode[1] = '0';
+            } else if (color == 1) {
+                colorcode[1] = '1';
+            } else if (color == 3) {
+                colorcode[1] = '2';
+            } else if (color == 2) {
+                colorcode[1] = '3';
+            } else if (color == 5) {
+                colorcode[1] = '4';
+            } else if (color == 6) {
+                colorcode[1] = '5';
+            } else if (color == 4) {
+                colorcode[1] = '6';
+            } else {
+                colorcode[1] = '7';
+            }
+        }
+        colorcode[2] = 'm';
+        colorcode[3] = '\0';
+
+        strcomb(formattedtext, colorcode);
+        strcomb(formattedtext, text);
+        strcomb(formattedtext, "\033[0m");
+
+        flanterm_write(terminal, formattedtext, getlenght(formattedtext));
+    }
+}
+
+//so far color pallete!
+
+// white - Informative
+// red - Fatal Exception
+// yellow - Warning, Light Exception, Error code
+// green - Loaded, Kernel mention
+// cyan - Interrupt
+// blue - Panic
+// purple - empty
+// grey - empty
+// light red - empty
+// light yellow - empty
+// light green - empty
+// light cyan - empty
+// light blue - empty
+// light purple - empty
+ 
 // =====================================================================
 // Others i guess
 // =====================================================================
 
 void killcores(void) {
     
+}
+
+void panic(int vector) {
+    write("\033[2J\033[H", 7, true);
+    char row[101];
+    nwrite("", 5, false);
+    row[0] = ' ';
+    for (int i = 0; i < 86; i++) {
+        row [i+1] = '@';
+    }
+    row[87] = '\0';
+    nwrite(row, 5, false);
 }
 
 // =====================================================================
@@ -185,18 +360,42 @@ void _start(void) {
     init_gdt();
 
     if (framebuffer_request.response == NULL
-     || framebuffer_request.response->framebuffer_count < 1) {
-        hcf();
-    }
+         || framebuffer_request.response->framebuffer_count < 1) {
+            hcf();
+        }
 
-    struct limine_framebuffer *fb = framebuffer_request.response->framebuffers[0];
+        struct limine_framebuffer *fb = framebuffer_request.response->framebuffers[0];
 
-    rect(0, 0, fb->width, fb->height, 0, 0, 255);
+        terminal = flanterm_fb_init(
+            NULL, NULL,
+            (uint32_t *)fb->address,
+            fb->width, fb->height, fb->pitch,
+            fb->red_mask_size, fb->red_mask_shift,
+            fb->green_mask_size, fb->green_mask_shift,
+            fb->blue_mask_size, fb->blue_mask_shift,
+            NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+            NULL, 0, 0, 0, 0, 0, 0,
+            FLANTERM_FB_ROTATE_0
+        );
 
-    rect(50, 50, 150, 150, 255, 0, 0);
+        if (terminal == NULL) {
+            terminalavailable = false;
+        } else {
+            terminalavailable = true;
+        }
+    
+    write("Greetings from the ", 8, true);
+    write("K15² ", 3, true);
+    nwrite(" Kernel!", 8, true);
+    nwrite(" ", 8, true);
+    
+    InitiateIDT();
 
-    volatile int x = 2/0;
-    //i forgot if i added exceptions cuz im a dimwit
+    volatile int a = 1;
+    volatile int b = 0;
+    volatile int c = a / b;
+
+    panic(0);
     
     hcf();
 }
