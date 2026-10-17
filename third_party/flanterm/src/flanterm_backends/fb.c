@@ -1411,7 +1411,7 @@ struct flanterm_context *flanterm_fb_init(
         ctx->font_width = font_width = 8;
         ctx->font_height = font_height = 16;
         ctx->font_bits_size = FONT_BYTES;
-        font_spacing = 1;
+        font_spacing = 0;
         ctx->font_bits = _malloc(ctx->font_bits_size);
         if (ctx->font_bits == NULL) {
             goto fail;

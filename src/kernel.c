@@ -1,3 +1,13 @@
+// by using this you admit to not being a bum which includes:
+
+// not being homophobic
+// not being transphobic
+// not being racist
+// not being sexist
+// not being anti-furry (grow up its 2026 not 2022)
+// not being a vibe coder (excludes ai for help or tiny code)
+// not being xenophobic
+
 // =====================================================================
 // Includes
 // =====================================================================
@@ -336,16 +346,206 @@ void killcores(void) {
     
 }
 
-void panic(int vector) {
+void panic(int vector, int cr2, int errorcode) {
     write("\033[2J\033[H", 7, true);
-    char row[101];
-    nwrite("", 5, false);
-    row[0] = ' ';
-    for (int i = 0; i < 86; i++) {
-        row [i+1] = '@';
+
+    for (int i = 0; i < 160; i++) {
+        write("█", 1, true);
     }
-    row[87] = '\0';
-    nwrite(row, 5, false);
+    nwrite("", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    for (int j = 0; j < 156; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+
+    write("  K   K  EEEEE  RRRR   N   N  EEEEE  L        PPPP    AAA   N   N  IIIII   CCCC", 1, true);
+
+    for (int j = 0; j < 77; j++) {
+        write(" ", 1, false);
+    }
+    
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+
+    write("  K  K   E      R   R  NN  N  E      L        P   P  A   A  NN  N    I    C    ", 1, true);
+
+    for (int j = 0; j < 77; j++) {
+        write(" ", 1, false);
+    }
+
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+
+    write("  KKK    EEEEE  RRRR   N N N  EEEEE  L        PPPP   AAAAA  N N N    I    C    ", 1, true);
+
+    for (int j = 0; j < 77; j++) {
+        write(" ", 1, false);
+    }
+
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+
+    write("  K K    E      R  R   N  NN  E      L        P      A   A  N  NN    I    C    ", 1, true);
+
+    for (int j = 0; j < 77; j++) {
+        write(" ", 1, false);
+    }
+
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+
+    write("  K   K  EEEEE  R   R  N   N  EEEEE  LLLLL    P      A   A  N   N  IIIII   CCCC", 1, true);
+
+    for (int j = 0; j < 77; j++) {
+        write(" ", 1, false);
+    }
+
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    for (int j = 0; j < 156; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    for (int j = 0; j < 160; j++) {
+        write("█", 1, true);
+    }
+    nwrite("", 0, false);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    for (int j = 0; j < 156; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+
+    write("  THE KERNEL RAN INTO AN ERROR THAT EITHER COULD NOT BE RECOVERED FROM, OR REQUIRED A NECESSARY STOP OF THE SYSTEM", 1, true);
+    
+    for (int j = 0; j < 42; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    nwrite("█", 1, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    for (int j = 0; j < 156; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    write("█", 1, true);
+    nwrite("", 3, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    write("  - WHAT DO I DO?", 1, true);
+    for (int j = 0; j < 139; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    write("█", 1, true);
+    nwrite("", 3, true);
+    
+    write("█", 1, true);
+    write("█", 1, true);
+    write("    - - O P T I O N S - -", 1, true);
+    for (int j = 0; j < 131; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    write("█", 1, true);
+    nwrite("", 3, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    write("    1) GO TO THE OFFICIAL WEBSITE AND FIND A SOLUTION TO THE ERROR", 1, true);
+    for (int j = 0; j < 90; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    write("█", 1, true);
+    nwrite("", 3, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    write("    2) FLASH A NEW PHOSPHOROS IMAGE", 1, true);
+    for (int j = 0; j < 121; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    write("█", 1, true);
+    nwrite("", 3, true);
+
+    write("█", 1, true);
+    write("█", 1, true);
+    write("    3) REBOOT THE SYSTEM IF THIS IS A ONE TIME BUG", 1, true);
+    for (int j = 0; j < 106; j++) {
+        write(" ", 1, false);
+    }
+    write("█", 1, true);
+    write("█", 1, true);
+    nwrite("", 3, true);
+
+    
+    for (int i = 0; i < 20; i++) {
+        write("█", 1, true);
+        write("█", 1, true);
+        for (int j = 0; j < 156; j++) {
+            write(" ", 1, false);
+        }
+        write("█", 1, true);
+        write("█", 1, true);
+        nwrite("", 3, true);
+    }
+
+    write("█", 1, true);
+    write("█", 1, true);
+
+    switch (vector) {
+        case 8:
+            write("  ERROR_HANDLE_FAIL (#DF)");
+        case 10:
+            
+        case 13:
+            write("  GENERAL_PROTECTION_FAULT");
+        case 14:
+            write("  PAGE_FAULT");
+        case 18:
+            write("  HARDWARE_RETURN_LOSS (#MC)")
+    }
+    write("█", 1, true);
+    nwrite("█", 1, true);
+    
+    for (int i = 0; i < 160; i++) {
+        write("█", 1, true);
+    }
 }
 
 // =====================================================================
@@ -391,11 +591,8 @@ void _start(void) {
     
     InitiateIDT();
 
-    volatile int a = 1;
-    volatile int b = 0;
-    volatile int c = a / b;
-
-    panic(0);
+    panic(0, 0, 1);
     
     hcf();
+
 }
