@@ -1,2 +1,5 @@
 # PhosphorOS
-A Test OS to see if my bad comprehension is stronger than my determination and dreams
+hey! Shadow Here!
+
+this os is my passion project, meant to grow far later, currently might not work... im reworking gdt!
+come back soon!
