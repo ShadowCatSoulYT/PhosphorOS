@@ -46,7 +46,7 @@ fb.o: third_party/flanterm/src/flanterm_backends/fb.c
 kernel.bin: gdt.o interrupts.o kernel.o interrupts_asm.o fb.o flanterm.o
 	$(Linker) $(LDFLAGS) gdt.o interrupts.o kernel.o interrupts_asm.o fb.o flanterm.o -o kernel.bin
 
-$(ISO): kernel.bin
+$(ISO): kernel.bin limine.conf cd-uefi.bin
 	mkdir -p iso_root/boot
 	cp kernel.bin iso_root/boot
 	cp limine.conf iso_root/boot
